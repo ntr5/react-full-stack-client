@@ -14,11 +14,6 @@ export default class JournalList extends Component {
     constructor(props) {
         super()
 
-        // this.state = {
-        //     journalData: rawJournalDAta,
-        //     greeting: 'Hi there',
-        //     isOpen: true
-        // }
         this.state = {
             journalData: [],
             greeting: "hi there",
@@ -52,10 +47,6 @@ export default class JournalList extends Component {
             })
     }
 
-    // showAllEntries = () => {
-    //     this.setState({ journalData: rawJournalDAta, isOpen: true })
-    // }
-
     toggleStatus = () => {
         if(this.state.isOpen) {
             this.setState({journalData: [], isOpen: false})
@@ -64,6 +55,19 @@ export default class JournalList extends Component {
         }
     }
 
+    deleteItem = id => {
+        fetch('http://localhost:5000/journal_entry/${id}', {
+            method: "DELETE"
+        })
+        .then(
+            this.setState({
+                JournalData: this.state.journalData.filter(item => {
+                    return item.id !== id
+                })
+            })
+        )
+        .catch(error => console.log('deleted item error', error))
+    }
     
 
     render() {
@@ -84,7 +88,6 @@ export default class JournalList extends Component {
                 }
                 <button onClick={this.toggleStatus}>Toggle Entries</button>
                 {journalEntries}
-                
             </div>
         );
     }
